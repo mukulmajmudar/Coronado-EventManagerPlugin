@@ -1,25 +1,15 @@
 from Coronado.Plugin import AppPlugin as AppPluginBase
-from Coronado.Config import Config as ConfigBase
 
-class Config(ConfigBase):
-
-    def __init__(self, keys=None): 
-        if keys is None:
-            keys = []
-        super().__init__(
-        [
-            'eventManagerName'
-        ] + keys)
-
-    def _getEventManagerName(self):
-        return 'eventManager'
-
+config = \
+{
+    'eventManagerName': 'eventManager'
+}
 
 class AppPlugin(AppPluginBase):
     context = None
 
     # pylint: disable=unused-argument
-    def start(self, app, context):
+    def start(self, context):
         self.context = context
         self.context['eventManager'] = self.makeEventManager()
         self.context['shortcutAttrs'].append('eventManager')
@@ -31,9 +21,8 @@ class AppPlugin(AppPluginBase):
 
 class EventManager(object):
 
-    def __init__(self, name, ioloop):
+    def __init__(self, name):
         self.name = name
-        self.ioloop = ioloop is not None and ioloop or IOLoop.current()
         self.messageHandlers = {}
 
     def start(self):
@@ -64,7 +53,7 @@ class EventManager(object):
     def _onEvent(self, listenerId, **kwargs):
         # Call message handler associated with the binding ID, if any
         if listenerId in self.messageHandlers:
-            self.messageHandlers[listenerId](**kwargs)
+            return self.messageHandlers[listenerId](**kwargs)
 
 
     def _saveHandler(self, listenerId, messageHandler):

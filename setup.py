@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='EventManagerPlugin',
-    version='1.0',
+    version='1.1',
     packages=['EventManagerPlugin'],
     install_requires=
     [
@@ -10,4 +10,4 @@ setup(
     ],
     author='Mukul Majmudar',
     author_email='mukul@curecompanion.com',
-    description='Event manager base plugin for Coronado')
+    description='Event manager interface plugin for Coronado')
